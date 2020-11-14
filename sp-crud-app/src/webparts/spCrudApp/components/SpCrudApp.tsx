@@ -2,40 +2,36 @@ import * as React from "react";
 //import styles from "./SpCrudApp.module.scss";
 import { ISpCrudAppProps } from "./ISpCrudAppProps";
 import { ISpCrudAppState } from "./ISpCrudAppState";
+import Create from "./crud-components/create";
+import "./style.css";
 import { escape } from "@microsoft/sp-lodash-subset";
 //import { SPOperations } from "../services/SPServices";
 import "bootstrap/dist/css/bootstrap.css";
-//import { sp } from "@pnp/sp/presets/all";
-//import { sp } from "@pnp/sp";
-//import "@pnp/sp/webs";
+//import "bootstrap/dist/js/bootstrap.min.js";
+import { BrowserRouter as Router, Switch, Route,Link } from "react-router-dom";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { Web } from "@pnp/sp/webs";
+//import { Button } from 'react-bootstrap'
+// import "font-awesome/css/font-awesome.css"
+// import "font-awesome/css/font-awesome.min.css"
 
-// export interface IDataFromOtherScState {
-//   listItems: any;
-//   //createItem: any;
-// }
 export default class SpCrudApp extends React.Component<
   ISpCrudAppProps,
-  //IDataFromOtherScState,
   ISpCrudAppState,
   any
 > {
-  public newItem: {};
   constructor(props: ISpCrudAppProps, any) {
     super(props);
-    this.newItem = { title: "nitem", date: new Date() };
     this.state = {
-      listItems: [],
+      listItems: [], //stores items retrieved from SharePoint list
     };
   }
-
-  private web = Web(
-    "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo"
-  );
+  //SharePoint site URL
+  public web = Web("https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo");
 
   public componentDidMount = () => {
+    //retrieving items from SP list
     this.web.lists
       .getByTitle("Test")
       .items()
@@ -49,113 +45,56 @@ export default class SpCrudApp extends React.Component<
       });
   };
 
-  public changeHandle = (e) => {
-    const createdItem = this.newItem;
-    createdItem[e.target.name] = e.target.value;
-    console.log(createdItem, this.newItem["genre"]);
-
-    //this.setState({[e.target.name]: e.target.value });
-  };
-
-  public handleSubmit = () => {
-    // const list=[...this.state.createItem,this.newItem]
-    // this.setState({ createItem: list});
-    // console.log("endNew", this.state.createItem);
-    this.web.lists
-      .getByTitle("Test")
-      .items.add({
-        Title: this.newItem["title"],
-        name: this.newItem["name"],
-        Genre: this.newItem["genre"],
-        Plot: this.newItem["plot"],
-        ReleasedDate: this.newItem["date"],
-        Ratings: this.newItem["ratings"],
-      })
-      .then((result: any) => console.log("insert successful "))
-      .catch((err) => console.log(err));
-
-    window.location.reload();
-  };
-
   public render(): React.ReactElement<ISpCrudAppProps> {
-    //const { name, genre, plot, ratings } = this.state;
     return (
-      <div className="card">
-        <div className="card-body">
-          <h2>Test Application</h2>
-          <span>CRUD operations through SharePoint</span>
-          <p>Loading from - {this.props.context.pageContext.web.absoluteUrl}</p>
+      <Router>
+        <Route path="/create" component={Create} ></Route>
+        <div >
+          <div id="head">
+            <h2>My Movies</h2>
+            <p>CRUD operations through SharePoint</p>
+          </div>
+          <button
+            className="btn btn-dark"
+            style={{ margin: "10px" }}
+            data-toggle="modal"
+            data-target="#addItemForm"
+          >
+            <Link to={"/create"}>New +</Link>
+            
+          </button>
+          
           <table className="table">
             <thead>
-              <th>Name</th>
-              <th>Genre</th>
-              <th>Released Date</th>
-              <th>Ratings</th>
-              <th>Plot</th>
+              <th>Title</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
             </thead>
             <tbody>
               {this.state.listItems.map((m) => (
                 <tr>
-                  <td>{m.name}</td>
-                  <td>{m.Genre}</td>
-                  <td>{m.ReleasedDate}</td>
-                  <td>{m.Ratings}</td>
-                  <td>{m.Plot}</td>
+                  <td style={{ padding: "20px" }}>{m.name}</td>
+                  <td>
+                    <button className="btn btn-link">View Details</button>
+                  </td>
+                  <td>
+                    <button className="btn btn-warning">Edit</button>
+                  </td>
+                  <td>
+                    <button className="btn btn-danger">Delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="card">
-            <h3 style={{ padding: "10px", backgroundColor: "yellow" }}>
-              Add new item here
-            </h3>
-            <form style={{ padding: "10px" }}>
-              <div className="form-group">
-                <label htmlFor="">Title</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="name"
-                  //value={name}
-                  onChange={this.changeHandle}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="">Genre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="genre"
-                  //value={genre}
-                  onChange={this.changeHandle}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="">Plot</label>
-                <textarea
-                  className="form-control"
-                  name="plot"
-                  //value={plot}
-                  onChange={this.changeHandle}
-                ></textarea>
-              </div>
-              <div className="form-group">
-                <label htmlFor="">Ratings</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="ratings"
-                  //value={ratings}
-                  onChange={this.changeHandle}
-                />
-              </div>
-            </form>
-            <button className="btn btn-primary" onClick={this.handleSubmit}>
-              Enter
-            </button>
-          </div>
+
+          {/* <section style={{ display: "none" }}>
+          <Create web={this.web}></Create>
+        </section> */}
         </div>
-      </div>
+      </Router>
     );
   }
 }
