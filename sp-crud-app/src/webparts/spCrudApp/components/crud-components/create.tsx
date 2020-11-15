@@ -1,28 +1,26 @@
 import * as React from "react";
 import { Component } from "react";
 
-export interface CreateNProps {
+export interface CreateProps {
   web?: any;
   onChange?: any;
   onSubmit?: any;
 }
 
-export interface CreateNState {}
+export interface CreateState {}
 
-class CreateN extends React.Component<CreateNProps, CreateNState> {
-  public newItem: {}; //stores the details of the new item
+class Create extends React.Component<CreateProps, CreateState> {
+  public newItemCreated: {}; //stores the details of the new item
   state = {};
-  constructor(props: CreateNProps) {
+  constructor(props: CreateProps) {
     super(props);
-    this.newItem = { title: "nitem", date: new Date() };
+    this.newItemCreated = { title: "new item", };
   }
 
   public changeHandle = (e) => {
-    const createdItem = this.newItem;
+    const createdItem = this.newItemCreated;
     createdItem[e.target.name] = e.target.value;
-    console.log(createdItem, this.newItem["genre"]);
-
-    //this.setState({[e.target.name]: e.target.value });
+    console.log(createdItem, this.newItemCreated["genre"]);
   };
 
   public handleSubmit = () => {
@@ -30,27 +28,26 @@ class CreateN extends React.Component<CreateNProps, CreateNState> {
     web.lists
       .getByTitle("Test")
       .items.add({
-        Title: this.newItem["title"],
-        name: this.newItem["name"],
-        Genre: this.newItem["genre"],
-        Plot: this.newItem["plot"],
-        ReleasedDate: this.newItem["date"],
-        Ratings: this.newItem["ratings"],
+        Title: this.newItemCreated["title"],
+        name: this.newItemCreated["name"],
+        Genre: this.newItemCreated["genre"],
+        Plot: this.newItemCreated["plot"],
+        ReleasedDate: this.newItemCreated["releasedDate"],
+        Ratings: this.newItemCreated["ratings"],
       })
       .then((result: any) => console.log("insert successful "))
       .catch((err) => console.log(err));
 
-    window.location.reload();
+    //window.location.reload();
+    // let frm=document.getElementsByName("createItemForm");
+    // frm.reset();
   };
 
   render() {
-    const { onChange, onSubmit } = this.props;
     return (
       <div className="card">
-        <h3 style={{ padding: "10px", backgroundColor: "blue" }}>
-          Add new item here
-        </h3>
-        <form style={{ padding: "10px" }}>
+        <h3>Add a new item here</h3>
+        <form style={{ padding: "10px" }} name="createItemForm">
           <div className="form-group">
             <label htmlFor="">Title</label>
             <input
@@ -86,6 +83,15 @@ class CreateN extends React.Component<CreateNProps, CreateNState> {
               onChange={this.changeHandle}
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="">Ratings</label>
+            <input
+              type="date"
+              className="form-control"
+              name="releasedDate"
+              onChange={this.changeHandle}
+            />
+          </div>
         </form>
         <button className="btn btn-primary" onClick={this.handleSubmit}>
           Enter
@@ -95,4 +101,4 @@ class CreateN extends React.Component<CreateNProps, CreateNState> {
   }
 }
 
-export default CreateN;
+export default Create;

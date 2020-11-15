@@ -1,20 +1,26 @@
 import * as React from "react";
-//import styles from "./SpCrudApp.module.scss";
 import { ISpCrudAppProps } from "./ISpCrudAppProps";
 import { ISpCrudAppState } from "./ISpCrudAppState";
 import Create from "./crud-components/create";
+import ItemsTable from "./crud-components/itemsTable";
+import Edit from "./crud-components/update";
+import ItemDetailsProps from "./crud-components/details"
 import "./style.css";
 import { escape } from "@microsoft/sp-lodash-subset";
-//import { SPOperations } from "../services/SPServices";
 import "bootstrap/dist/css/bootstrap.css";
-//import "bootstrap/dist/js/bootstrap.min.js";
-import { BrowserRouter as Router, Switch, Route,Link } from "react-router-dom";
+import { Icon } from "office-ui-fabric-react/lib/Icon";
+import { BrowserRouter as Router, Switch, Route, Link ,Redirect,browserHistory} from "react-router-dom";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { Web } from "@pnp/sp/webs";
+import ItemDetails from "./crud-components/details";
+// import { Button } from "office-ui-fabric-react/lib/Button";
 //import { Button } from 'react-bootstrap'
 // import "font-awesome/css/font-awesome.css"
 // import "font-awesome/css/font-awesome.min.css"
+//import "bootstrap/dist/js/bootstrap.min.js";
+//import { SPOperations } from "../services/SPServices";
+//import styles from "./SpCrudApp.module.scss";
 
 export default class SpCrudApp extends React.Component<
   ISpCrudAppProps,
@@ -47,52 +53,43 @@ export default class SpCrudApp extends React.Component<
 
   public render(): React.ReactElement<ISpCrudAppProps> {
     return (
-      <Router>
-        <Route path="/create" component={Create} ></Route>
-        <div >
+      <Router history={browserHistory}>
+        <div>
           <div id="head">
-            <h2>My Movies</h2>
+            <h2>Movies</h2>
             <p>CRUD operations through SharePoint</p>
           </div>
-          <button
-            className="btn btn-dark"
-            style={{ margin: "10px" }}
-            data-toggle="modal"
-            data-target="#addItemForm"
-          >
-            <Link to={"/create"}>New +</Link>
-            
+          <button className="btn btn-dark" style={{margin:"5px"}}>
+            <Link to={"/add-new"}>
+              New <Icon iconName="CirclePlus" />
+            </Link>
           </button>
-          
-          <table className="table">
-            <thead>
-              <th>Title</th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </thead>
-            <tbody>
-              {this.state.listItems.map((m) => (
-                <tr>
-                  <td style={{ padding: "20px" }}>{m.name}</td>
-                  <td>
-                    <button className="btn btn-link">View Details</button>
-                  </td>
-                  <td>
-                    <button className="btn btn-warning">Edit</button>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger">Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <button className="btn btn-dark" style={{margin:"5px"}}>
+            <Link to={"/home"}>Display Items</Link>
+          </button>
 
-          {/* <section style={{ display: "none" }}>
-          <Create web={this.web}></Create>
-        </section> */}
+          <Switch>
+            <Route
+              path="/home"
+              render={(props) => (
+                <ItemsTable {...props} items={this.state.listItems} web={this.web} />
+              )}
+            ></Route>
+            <Route
+              path="/add-new"
+              render={(props) => <Create {...props} web={this.web} />}
+            ></Route>
+            {/* <Route
+              path="/details/:movie"
+              // render={(props) => <ItemDetails {...props} item={this.state.listItems}  />}
+              component={ItemDetails}
+            /> */}
+            {/* <Route
+                  path="/edit/:movies"
+                  render={(props) => <Edit {...props} web={this.web} />}
+                /> */}
+            <Redirect from="/" to="/home"></Redirect>
+          </Switch>
         </div>
       </Router>
     );

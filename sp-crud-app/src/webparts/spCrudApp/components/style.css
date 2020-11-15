@@ -1,20 +1,12 @@
 #head {
-  /* background: rgb(30, 212, 226);
-  background: linear-gradient(
-    124deg,
-    rgba(30, 212, 226, 0.8916608879880077) 0%,
-    rgba(245, 226, 119, 0.9588877787443102) 0%,
-    rgba(139, 236, 207, 1) 50%,
-    rgba(115, 122, 246, 0.9644900196406687) 100%
-  ); */
-  background: rgb(30, 212, 226);
-  background: radial-gradient(
+  background: rgb(30, 121, 226);
+  /* background: radial-gradient(
     circle,
     rgba(30, 212, 226, 0.8916608879880077) 0%,
     rgba(255, 226, 65, 0.9588877787443102) 0%,
     rgba(55, 247, 190, 1) 50%,
     rgba(63, 74, 252, 0.9644900196406687) 100%
-  );
+  ); */
   /* background-image: url(src\webparts\spCrudApp\images\head_bg.png); */
   color: white;
   padding: 10px;
