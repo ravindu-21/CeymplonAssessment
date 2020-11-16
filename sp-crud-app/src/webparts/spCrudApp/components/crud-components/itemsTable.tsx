@@ -6,6 +6,7 @@ import {
   Route,
   Link,
   match,
+  useHistory,Redirect
 } from "react-router-dom";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import ItemDetails from "./details";
@@ -25,9 +26,8 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
   }
 
   public handleDelete = (movie: any) => {
-    const { web, items } = this.props;
-    console.log(movie);
-    console.log(items);
+    const { web} = this.props;
+    //Deleting an item from SP list
     web.lists
       .getByTitle("Test")
       .items.getById(movie)
@@ -36,24 +36,12 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
       .catch((err) => console.log(err));
   };
 
-  public scrollDown = () => {
-    let offsetTop = document.getElementById("ViewAndEdit").offsetTop;
-    window.scrollTo({
-      top: offsetTop - 10,
-      behavior: "smooth",
-    });
-  };
-
   render() {
     return (
       <Router>
         <table className="table">
           <thead>
-            <th style={{ textAlign: "center" }}>Title</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>Title</th>
           </thead>
           <tbody id="table-content">
             <div>
@@ -61,7 +49,7 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
                 <tr>
                   <td style={{ padding: "20px" }}>{item.name}</td>
                   <td>
-                    <button className="btn btn-link" onClick={this.scrollDown}>
+                    <button className="btn btn-link">
                       <Link to={`/details/${item.ID}`}>View</Link>
                     </button>
                   </td>
@@ -83,19 +71,26 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
                 </tr>
               ))}
             </div>
-            <div id="ViewAndEdit">
+            {/* Details / Edit form is displaying here */}
+            <section id="ViewAndEdit">
               <Route
-                path="/details/:movie"
+                path="/details/:itemId"
                 render={(props) => (
                   <ItemDetails {...props} items={this.props.items} />
                 )}
-                //component={ItemDetails}
               />
               <Route
-                path="/edit/:movie"
-                render={(props) => <Edit {...props} web={this.props.web} items={this.props.items} />}
+                path="/edit/:itemId"
+                render={(props) => (
+                  <Edit
+                    {...props}
+                    web={this.props.web}
+                    items={this.props.items}
+                  />
+                )}
               />
-            </div>
+            </section>
+            
           </tbody>
         </table>
       </Router>

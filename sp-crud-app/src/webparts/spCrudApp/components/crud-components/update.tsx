@@ -3,7 +3,7 @@ import { Component } from "react";
 import { RouteComponentProps, match } from "react-router";
 
 interface RouteData {
-  movie: any;
+  itemId: any;
 }
 
 export interface EditProps {
@@ -21,11 +21,8 @@ export interface EditState {
 }
 
 class Edit extends React.Component<EditProps, EditState> {
-  //state = {};
-  public itemEdited: {};
   constructor(props: EditProps) {
     super(props);
-    this.itemEdited = { title: "new item" };
     this.state = {
       name: "",
       genre: "",
@@ -36,24 +33,21 @@ class Edit extends React.Component<EditProps, EditState> {
   }
 
   public changeHandle = (e: any) => {
-    // const createdItem = this.itemEdited;
-    // createdItem[e.target.name] = e.target.value;
-    // console.log(createdItem, this.itemEdited["genre"]);
-    const editedData = {...this.state};
-    editedData[e.target.name] = e.target.value;
+    const itemsCopy = { ...this.state };
+    itemsCopy[e.target.name] = e.target.value;
     this.setState({
-      name: editedData["name"],
-      genre: editedData["genre"],
-      plot: editedData["plot"],
-      ratings: editedData["ratings"],
-      releasedDate: editedData["releasedDate"],
+      name: itemsCopy["name"],
+      genre: itemsCopy["genre"],
+      plot: itemsCopy["plot"],
+      ratings: itemsCopy["ratings"],
+      releasedDate: itemsCopy["releasedDate"],
     });
   };
 
   public handleEdit = (id: any) => {
     const { web } = this.props;
     const { name, genre, plot, releasedDate, ratings } = this.state;
-    console.log("id: "+id);
+
     web.lists
       .getByTitle("Test")
       .items.getById(id)
@@ -64,17 +58,18 @@ class Edit extends React.Component<EditProps, EditState> {
         ReleasedDate: `${releasedDate}`,
         Ratings: `${ratings}`,
       })
-      .then((result: any) => console.log("Update successful "))
+      .then((result: any) => alert("Update successful "))
       .catch((err) => console.log(err));
   };
 
   componentDidMount = () => {
-    const { movie } = this.props.match.params;
-    const filteredItems = this.props.items.filter(
-      (m) => m.ID === parseInt(movie)
+    const { itemId } = this.props.match.params;
+    //filtering the item that is chosen to edit form all items
+    const itemToBeEdit = this.props.items.filter(
+      (item) => item.ID === parseInt(itemId)
     );
-    for (let i = 0; i < filteredItems.length; i++) {
-      const element = filteredItems[i];
+    for (let i = 0; i < itemToBeEdit.length; i++) {
+      const element = itemToBeEdit[i];
       this.setState({
         name: element.name,
         genre: element.Genre,
@@ -86,74 +81,88 @@ class Edit extends React.Component<EditProps, EditState> {
   };
 
   render() {
-    const { movie } = this.props.match.params;
-    const filteredItems = this.props.items.filter(
-      (m) => m.ID === parseInt(movie)
-    );
-    console.log(this.state);
-    console.log(filteredItems);
+    const { itemId } = this.props.match.params;
     const { name, genre, plot, releasedDate, ratings } = this.state;
+    
     return (
       <div>
         <h2>Edit item here</h2>
         <div>
-          {filteredItems.map((i) => (
-            <form style={{ padding: "10px" }} name="createItemForm">
-              <div className="form-group">
-                <label htmlFor="">{i.name}</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="name"
-                  value={name}
-                  onChange={this.changeHandle}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="">Genre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="genre"
-                  value={genre}
-                  onChange={this.changeHandle}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="">Plot</label>
-                <textarea
-                  className="form-control"
-                  name="plot"
-                  value={plot}
-                  onChange={this.changeHandle}
-                ></textarea>
-              </div>
-              <div className="form-group">
-                <label htmlFor="">Ratings</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="ratings"
-                  value={ratings}
-                  onChange={this.changeHandle}
-                  min={0}
-                  max={10}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="">ReleasedDate</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  name="releasedDate"
-                  value={releasedDate}
-                  onChange={this.changeHandle}
-                />
-              </div>
-            </form>
-          ))}
+          <form style={{ padding: "10px" }} name="createItemForm">
+            <div className="form-group">
+              <label htmlFor="">Title</label>
+              <input
+                type="text"
+                className="form-control"
+                name="name"
+                value={name}
+                onChange={this.changeHandle}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="">Genre</label>
+              <select
+                className="form-control"
+                onChange={this.changeHandle}
+                name="genre"
+              >
+                <option
+                  value="Action"
+                  selected={genre === "Action" ? true : false}
+                >
+                  Action
+                </option>
+                <option
+                  value="Comedy"
+                  selected={genre === "Comedy" ? true : false}
+                >
+                  Comedy
+                </option>
+                <option
+                  value="Sci-fi"
+                  selected={genre === "Sci-fi" ? true : false}
+                >
+                  Sci-fi
+                </option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="">Plot</label>
+              <textarea
+                className="form-control"
+                name="plot"
+                value={plot}
+                onChange={this.changeHandle}
+              ></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="">Ratings</label>
+              <input
+                type="number"
+                className="form-control"
+                name="ratings"
+                value={ratings}
+                onChange={this.changeHandle}
+                min={0}
+                max={10}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="">ReleasedDate</label>
+              <input
+                type="date"
+                className="form-control"
+                name="releasedDate"
+                value={releasedDate}
+                onChange={this.changeHandle}
+              />
+            </div>
+          </form>
 
-          <button className="btn btn-primary" onClick={()=>this.handleEdit(parseInt(movie))}>
+          <button
+            className="btn btn-primary"
+            onClick={() => this.handleEdit(parseInt(itemId))}
+          >
             Enter
           </button>
         </div>

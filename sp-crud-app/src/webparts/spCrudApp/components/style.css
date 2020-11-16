@@ -1,21 +1,13 @@
 #head {
   background: rgb(30, 121, 226);
-  /* background: radial-gradient(
-    circle,
-    rgba(30, 212, 226, 0.8916608879880077) 0%,
-    rgba(255, 226, 65, 0.9588877787443102) 0%,
-    rgba(55, 247, 190, 1) 50%,
-    rgba(63, 74, 252, 0.9644900196406687) 100%
-  ); */
-  /* background-image: url(src\webparts\spCrudApp\images\head_bg.png); */
   color: white;
   padding: 10px;
 }
 #head >h2
 {
-  /* text-shadow: 20px 20px 40px #290e0e; */
   text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
 }
+
 #table-content{
   display: grid;
   grid-template-columns: 55% 45%;

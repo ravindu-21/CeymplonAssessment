@@ -4,7 +4,7 @@ import { RouteComponentProps, match } from "react-router";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 
 interface RouteData {
-  movie: any;
+  itemId: any;
 }
 
 export interface ItemDetailsProps {
@@ -20,14 +20,15 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
     super(props);
   }
   render() {
-    const { movie } = this.props.match.params;
-    const filteredItems = this.props.items.filter(
-      (m) => m.ID === parseInt(movie)
+    const { itemId } = this.props.match.params;
+    //filtering the item that is chosen to view form all items
+    const itemToBeView = this.props.items.filter(
+      (i) => i.ID === parseInt(itemId)
     );
 
     return (
       <div style={{ padding: "15px" }}>
-        {filteredItems.map((item) => (
+        {itemToBeView.map((item) => (
           <div>
             <div className="card" style={{ padding: "15px" }}>
               <h2 className="card-title">

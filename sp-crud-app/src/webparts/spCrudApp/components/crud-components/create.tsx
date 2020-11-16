@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Component } from "react";
+import { Link } from "react-router-dom";
 
 export interface CreateProps {
   web?: any;
-  onChange?: any;
-  onSubmit?: any;
 }
 
 export interface CreateState {}
@@ -14,17 +13,17 @@ class Create extends React.Component<CreateProps, CreateState> {
   state = {};
   constructor(props: CreateProps) {
     super(props);
-    this.newItemCreated = { title: "new item", };
+    this.newItemCreated = { title: "new item" };
   }
 
   public changeHandle = (e) => {
     const createdItem = this.newItemCreated;
     createdItem[e.target.name] = e.target.value;
-    console.log(createdItem, this.newItemCreated["genre"]);
   };
 
   public handleSubmit = () => {
     const { web } = this.props;
+    //Adding an item to the SP list
     web.lists
       .getByTitle("Test")
       .items.add({
@@ -35,12 +34,8 @@ class Create extends React.Component<CreateProps, CreateState> {
         ReleasedDate: this.newItemCreated["releasedDate"],
         Ratings: this.newItemCreated["ratings"],
       })
-      .then((result: any) => console.log("insert successful "))
+      .then((result: any) => alert("insert successful "))
       .catch((err) => console.log(err));
-
-    //window.location.reload();
-    // let frm=document.getElementsByName("createItemForm");
-    // frm.reset();
   };
 
   render() {
@@ -59,12 +54,15 @@ class Create extends React.Component<CreateProps, CreateState> {
           </div>
           <div className="form-group">
             <label htmlFor="">Genre</label>
-            <input
-              type="text"
+            <select
               className="form-control"
-              name="genre"
               onChange={this.changeHandle}
-            />
+              name="genre"
+            >
+              <option value="Action">Action</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Sci-fi">Sci-fi</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="">Plot</label>
@@ -80,11 +78,13 @@ class Create extends React.Component<CreateProps, CreateState> {
               type="number"
               className="form-control"
               name="ratings"
+              min={0}
+              max={10}
               onChange={this.changeHandle}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="">Ratings</label>
+            <label htmlFor="">Released Date</label>
             <input
               type="date"
               className="form-control"
@@ -93,7 +93,7 @@ class Create extends React.Component<CreateProps, CreateState> {
             />
           </div>
         </form>
-        <button className="btn btn-primary" onClick={this.handleSubmit}>
+        <button className="btn btn-success" onClick={this.handleSubmit}>
           Enter
         </button>
       </div>
