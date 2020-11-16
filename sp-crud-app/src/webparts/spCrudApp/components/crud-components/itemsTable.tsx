@@ -36,6 +36,14 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
       .catch((err) => console.log(err));
   };
 
+  public scrollDown = () => {
+    let offsetTop = document.getElementById("ViewAndEdit").offsetTop;
+    window.scrollTo({
+      top: offsetTop - 10,
+      behavior: "smooth",
+    });
+  };
+
   render() {
     return (
       <Router>
@@ -47,42 +55,47 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
             <th></th>
             <th></th>
           </thead>
-          <tbody>
-            {this.props.items.map((item) => (
-              <tr>
-                <td style={{ padding: "20px" }}>{item.name}</td>
-                <td>
-                  <button className="btn btn-link">
-                    <Link to={`/details/${item}`}>View Details</Link>
-                  </button>
-                </td>
-                <td>
-                  <button className="btn btn-warning">
-                    <Icon iconName="EditSolid12" />
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => this.handleDelete(item.ID)}
-                  >
-                    <Icon iconName="Delete" />
-                  </button>
-                </td>
-                {/* <tr>
-                  <Edit web={this.props.web} item={item.ID}></Edit>
-                </tr> */}
-              </tr>
-            ))}
-            <Route
-              path="/details/:movie"
-              // render={(props) => <ItemDetails {...props} item={this.state.listItems}  />}
-              component={ItemDetails}
-            />
-            {/* <Route
-                  path="/edit/:movies"
-                  render={(props) => <Edit {...props} web={this.props.web} />}
-                /> */}
+          <tbody id="table-content">
+            <div>
+              {this.props.items.map((item) => (
+                <tr>
+                  <td style={{ padding: "20px" }}>{item.name}</td>
+                  <td>
+                    <button className="btn btn-link" onClick={this.scrollDown}>
+                      <Link to={`/details/${item.ID}`}>View</Link>
+                    </button>
+                  </td>
+                  <td>
+                    <button className="btn btn-warning">
+                      <Link to={`/edit/${item.ID}`}>
+                        <Icon iconName="EditSolid12" />
+                      </Link>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => this.handleDelete(item.ID)}
+                    >
+                      <Icon iconName="Delete" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </div>
+            <div id="ViewAndEdit">
+              <Route
+                path="/details/:movie"
+                render={(props) => (
+                  <ItemDetails {...props} items={this.props.items} />
+                )}
+                //component={ItemDetails}
+              />
+              <Route
+                path="/edit/:movie"
+                render={(props) => <Edit {...props} web={this.props.web} items={this.props.items} />}
+              />
+            </div>
           </tbody>
         </table>
       </Router>

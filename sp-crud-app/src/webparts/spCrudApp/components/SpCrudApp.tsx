@@ -64,9 +64,9 @@ export default class SpCrudApp extends React.Component<
               New <Icon iconName="CirclePlus" />
             </Link>
           </button>
-          <button className="btn btn-dark" style={{margin:"5px"}}>
+          {/* <button className="btn btn-dark" style={{margin:"5px"}}>
             <Link to={"/home"}>Display Items</Link>
-          </button>
+          </button> */}
 
           <Switch>
             <Route
