@@ -18,6 +18,8 @@ export interface ISpCrudAppWebPartProps {
 
 export default class SpCrudAppWebPart extends BaseClientSideWebPart<ISpCrudAppWebPartProps> {
 
+  
+
   public render(): void {
     const element: React.ReactElement<ISpCrudAppProps> = React.createElement(
       SpCrudApp,

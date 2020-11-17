@@ -29,11 +29,13 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
     const { web} = this.props;
     //Deleting an item from SP list
     web.lists
-      .getByTitle("Test")
+      .getByTitle("Movies")
       .items.getById(movie)
       .delete()
       .then(() => console.log("delete successful"))
       .catch((err) => console.log(err));
+
+      location.href = "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
   };
 
   render() {

@@ -10,6 +10,7 @@ interface RouteData {
 export interface ItemDetailsProps {
   match?: match<RouteData>;
   items: any;
+  // itemID:any;
 }
 
 export interface ItemDetailsState {}
@@ -25,7 +26,13 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
     const itemToBeView = this.props.items.filter(
       (i) => i.ID === parseInt(itemId)
     );
-
+    //const { itemID } = this.props;
+    //filtering the item that is chosen to view form all items
+    // const itemToBeView = this.props.items.filter(
+    //   (i) => i.ID === parseInt(itemID)
+    // );
+    //   console.log("view",parseInt(itemID));
+    //   console.log("itbv",itemToBeView)
     return (
       <div style={{ padding: "15px" }}>
         {itemToBeView.map((item) => (

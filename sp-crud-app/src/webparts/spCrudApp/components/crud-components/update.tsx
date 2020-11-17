@@ -44,12 +44,12 @@ class Edit extends React.Component<EditProps, EditState> {
     });
   };
 
-  public handleEdit = (id: any) => {
+  public handleEdit = async (id: any) => {
     const { web } = this.props;
     const { name, genre, plot, releasedDate, ratings } = this.state;
-
-    web.lists
-      .getByTitle("Test")
+    //updating an item from SP list
+    await web.lists
+      .getByTitle("Movies")
       .items.getById(id)
       .update({
         name: `${name}`,
@@ -58,9 +58,14 @@ class Edit extends React.Component<EditProps, EditState> {
         ReleasedDate: `${releasedDate}`,
         Ratings: `${ratings}`,
       })
-      .then((result: any) => alert("Update successful "))
-      .catch((err) => console.log(err));
+      .then(() => alert("Update successful "))
+      .catch((err) => alert(err));
+
+     location.href =
+     "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+    //this.reload();
   };
+  
 
   componentDidMount = () => {
     const { itemId } = this.props.match.params;
@@ -83,10 +88,10 @@ class Edit extends React.Component<EditProps, EditState> {
   render() {
     const { itemId } = this.props.match.params;
     const { name, genre, plot, releasedDate, ratings } = this.state;
-    
+
     return (
-      <div>
-        <h2>Edit item here</h2>
+      <div className="card" style={{padding:"10px",margin:"3px"}}>
+        <h2>Edit Movie</h2>
         <div>
           <form style={{ padding: "10px" }} name="createItemForm">
             <div className="form-group">
@@ -163,7 +168,7 @@ class Edit extends React.Component<EditProps, EditState> {
             className="btn btn-primary"
             onClick={() => this.handleEdit(parseInt(itemId))}
           >
-            Enter
+            Save Changes
           </button>
         </div>
       </div>
