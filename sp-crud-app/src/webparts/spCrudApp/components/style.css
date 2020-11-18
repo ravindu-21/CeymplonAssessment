@@ -1,5 +1,6 @@
 #head {
-  background: rgb(30, 121, 226);
+  background: rgb(30, 121, 226); 
+  /* background: rgb(252, 249, 121); */
   color: white;
   padding: 10px;
 }
@@ -12,3 +13,4 @@
   display: grid;
   grid-template-columns: 52% 48%;
 }
+

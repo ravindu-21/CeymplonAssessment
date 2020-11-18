@@ -6,7 +6,8 @@ import {
   Route,
   Link,
   match,
-  useHistory,Redirect
+  useHistory,Redirect,
+  HashRouter
 } from "react-router-dom";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import ItemDetails from "./details";
@@ -40,7 +41,7 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
 
   render() {
     return (
-      <Router>
+      <HashRouter>
         <table className="table">
           <thead>
             <th>Title</th>
@@ -51,13 +52,13 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
                 <tr>
                   <td style={{ padding: "20px" }}>{item.name}</td>
                   <td>
-                    <button className="btn btn-link">
-                      <Link to={`/details/${item.ID}`}>View</Link>
+                    <button className="btn btn-secondary" title="View">
+                      <Link to={`/details/${item.ID}`} style={{color:"white"}}><Icon iconName="View" /></Link>
                     </button>
                   </td>
                   <td>
-                    <button className="btn btn-warning">
-                      <Link to={`/edit/${item.ID}`}>
+                    <button className="btn btn-warning" title="Edit">
+                      <Link to={`/edit/${item.ID}`} style={{color:"white"}}>
                         <Icon iconName="EditSolid12" />
                       </Link>
                     </button>
@@ -66,6 +67,7 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
                     <button
                       className="btn btn-danger"
                       onClick={() => this.handleDelete(item.ID)}
+                      title="Delete"
                     >
                       <Icon iconName="Delete" />
                     </button>
@@ -75,7 +77,7 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
             </div>
             {/* Details / Edit form is displaying here */}
             <section id="ViewAndEdit">
-              <Route
+              {/* <Route
                 path="/details/:itemId"
                 render={(props) => (
                   <ItemDetails {...props} items={this.props.items} />
@@ -90,12 +92,12 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
                     items={this.props.items}
                   />
                 )}
-              />
+              /> */}
             </section>
             
           </tbody>
         </table>
-      </Router>
+      </HashRouter>
     );
   }
 }

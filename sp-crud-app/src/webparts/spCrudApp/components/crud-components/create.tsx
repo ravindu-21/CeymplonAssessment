@@ -1,7 +1,7 @@
 import { Rating } from "office-ui-fabric-react";
 import * as React from "react";
-import { Component } from "react";
-import { Link } from "react-router-dom";
+//import { Component } from "react";
+import { Link,useHistory } from "react-router-dom";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import Switch from "react-bootstrap/esm/Switch";
 import { isEmpty } from "@microsoft/sp-lodash-subset";
@@ -56,10 +56,10 @@ class Create extends React.Component<CreateProps, CreateState> {
     }
   };
 
-  public handleSubmit = () => {
+  public handleSubmit = async () => {
     const { web } = this.props;
     //Adding an item to the SP list
-    web.lists
+    await web.lists
       .getByTitle("Movies")
       .items.add({
         Title: this.newItemCreated["title"],
@@ -71,6 +71,11 @@ class Create extends React.Component<CreateProps, CreateState> {
       })
       .then((result: any) => alert("insert successful "))
       .catch((err) => console.log(err));
+      //let history = useHistory();
+      // history.goBack()
+      //history.push('/')
+      location.href =
+     "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
   };
 
   render() {

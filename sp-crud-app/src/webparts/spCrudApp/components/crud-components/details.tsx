@@ -10,7 +10,7 @@ interface RouteData {
 export interface ItemDetailsProps {
   match?: match<RouteData>;
   items: any;
-  // itemID:any;
+  itemID: any;
 }
 
 export interface ItemDetailsState {}
@@ -26,6 +26,7 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
     const itemToBeView = this.props.items.filter(
       (i) => i.ID === parseInt(itemId)
     );
+
     //const { itemID } = this.props;
     //filtering the item that is chosen to view form all items
     // const itemToBeView = this.props.items.filter(
@@ -52,6 +53,13 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
               <p>
                 <b>{item.Genre}</b> /<b>Released on: {item.ReleasedDate}</b>
               </p>
+              {/* <p>
+                {new Intl.DateTimeFormat("en-GB", {
+                  year: "numeric",
+                  month: "long",
+                  day: "2-digit",
+                }).format(item.ReleasedDate)}
+              </p> */}
               <p>{item.Plot}</p>
             </div>
           </div>

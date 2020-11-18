@@ -67,7 +67,7 @@ class Edit extends React.Component<EditProps, EditState> {
   };
   
 
-  componentDidMount = () => {
+  public componentDidMount = () => {
     const { itemId } = this.props.match.params;
     //filtering the item that is chosen to edit form all items
     const itemToBeEdit = this.props.items.filter(
