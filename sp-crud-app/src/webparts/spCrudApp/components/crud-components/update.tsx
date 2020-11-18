@@ -8,8 +8,8 @@ interface RouteData {
 
 export interface EditProps {
   match?: match<RouteData>;
-  items?: any;//all items
-  web?: any;//SP url
+  items?: any; //all items
+  web?: any; //SP url
 }
 
 export interface EditState {
@@ -32,7 +32,7 @@ class Edit extends React.Component<EditProps, EditState> {
       releasedDate: "",
       ratings: undefined,
       errorMsgRating: "",
-      errorRating:false
+      errorRating: false,
     };
   }
 
@@ -48,7 +48,7 @@ class Edit extends React.Component<EditProps, EditState> {
       this.setState({
         errorRating: true,
       });
-    } 
+    }
     this.setState({
       name: itemsCopy["name"],
       genre: itemsCopy["genre"],
@@ -75,10 +75,9 @@ class Edit extends React.Component<EditProps, EditState> {
       .then(() => alert("Update successful "))
       .catch((err) => alert(err));
 
-     location.href =
-     "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+    location.href =
+      "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
   };
-  
 
   public componentDidMount = () => {
     const { itemId } = this.props.match.params;
@@ -98,12 +97,17 @@ class Edit extends React.Component<EditProps, EditState> {
     }
   };
 
+  public goBack() {
+    location.href =
+      "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+  }
+
   render() {
     const { itemId } = this.props.match.params;
     const { name, genre, plot, releasedDate, ratings } = this.state;
 
     return (
-      <div className="card" style={{padding:"10px",margin:"3px"}}>
+      <div className="card bg-light" style={{ padding: "10px", margin: "3px" }}>
         <h2>Edit Movie</h2>
         <div>
           <form style={{ padding: "10px" }} name="createItemForm">
@@ -165,10 +169,10 @@ class Edit extends React.Component<EditProps, EditState> {
                 max={10}
               />
               {this.state.errorRating === true ? (
-              <small style={{ color: "red" }}>
-                {this.state.errorMsgRating}
-              </small>
-            ) : null}
+                <small style={{ color: "red" }}>
+                  {this.state.errorMsgRating}
+                </small>
+              ) : null}
             </div>
             <div className="form-group">
               <label htmlFor="">ReleasedDate</label>
@@ -181,13 +185,16 @@ class Edit extends React.Component<EditProps, EditState> {
               />
             </div>
           </form>
-
-          <button
-            className="btn btn-primary"
-            onClick={() => this.handleEdit(parseInt(itemId))}
-          >
-            Save Changes
-          </button>
+          <section id="form-footer">
+            <div></div>
+            <button
+              className="btn btn-primary"
+              onClick={() => this.handleEdit(parseInt(itemId))}
+            >
+              Save
+            </button>
+            <button className="btn btn-secondary" onClick={this.goBack}>Close</button>
+          </section>
         </div>
       </div>
     );

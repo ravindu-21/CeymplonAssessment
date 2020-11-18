@@ -3,7 +3,7 @@
   "solution": {
     "name": "sp-crud-app-client-side-solution",
     "id": "ef8dba9c-1641-4934-a068-0bb66adefea0",
-    "version": "3.5.0.0",
+    "version": "3.7.0.0",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "developer": {

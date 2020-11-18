@@ -1,24 +1,22 @@
 #head {
-  background: rgb(30, 121, 226); 
-  /* background: rgb(252, 249, 121); */
+  background: rgb(30, 121, 226);
   color: white;
   padding: 10px;
 }
-#head >h2
-{
+#head > h2 {
   text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
 }
 
-#table-content{
+#table-content {
   display: grid;
   grid-template-columns: 52% 48%;
 }
-#details-card-title{
+#details-card-title {
   display: grid;
   grid-template-columns: 80% 20%;
   border-bottom: 1px solid rgb(134, 189, 252);
 }
-#ratings-badge{
+#ratings-badge {
   border-radius: 100px;
   font-size: large;
   background-color: #fad55af6;
@@ -27,5 +25,10 @@
   text-align: center;
   font-weight: bolder;
 }
-
-
+#form-footer {
+  display: grid;
+  grid-template-columns: 50% 23% 23%;
+}
+#form-footer > button {
+  margin: 2%;
+}

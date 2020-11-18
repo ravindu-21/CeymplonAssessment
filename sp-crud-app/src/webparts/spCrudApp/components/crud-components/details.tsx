@@ -8,8 +8,7 @@ interface RouteData {
 
 export interface ItemDetailsProps {
   match?: match<RouteData>;
-  items: any;//all items
-  //itemID: any;
+  items: any; //all items
 }
 
 export interface ItemDetailsState {}

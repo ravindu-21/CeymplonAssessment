@@ -77,10 +77,14 @@ class Create extends React.Component<CreateProps, CreateState> {
         .then((result: any) => alert("insert successful "))
         .catch((err) => console.log(err));
 
-      location.href =
-        "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+      this.goBack();
     }
   };
+
+  public goBack() {
+    location.href =
+      "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+  }
 
   render() {
     const { errorFields } = this.state;
@@ -115,7 +119,7 @@ class Create extends React.Component<CreateProps, CreateState> {
               name="genre"
               required={true}
             >
-              <option disabled selected ></option>
+              <option disabled selected></option>
               <option value="Action">Action</option>
               <option value="Comedy">Comedy</option>
               <option value="Sci-fi">Sci-fi</option>
@@ -177,15 +181,20 @@ class Create extends React.Component<CreateProps, CreateState> {
             ) : null}
           </div>
         </form>
-        <button
-          className="btn btn-primary"
-          onClick={this.handleSubmit}
-          disabled={
-            this.state.errorRequired === true || this.state.errorRating === true
-          }
-        >
-          Enter
-        </button>
+        <section id="form-footer">
+          <div></div>
+          <button
+            className="btn btn-primary"
+            onClick={this.handleSubmit}
+            disabled={
+              this.state.errorRequired === true ||
+              this.state.errorRating === true
+            }
+          >
+            Save
+          </button>
+          <button className="btn btn-secondary" onClick={this.goBack}>Close</button>
+        </section>
       </div>
     );
   }
