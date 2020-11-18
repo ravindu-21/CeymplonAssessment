@@ -1,7 +1,7 @@
 import { Rating } from "office-ui-fabric-react";
 import * as React from "react";
 //import { Component } from "react";
-import { Link,useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import Switch from "react-bootstrap/esm/Switch";
 import { isEmpty } from "@microsoft/sp-lodash-subset";
@@ -15,6 +15,7 @@ export interface CreateState {
   errorRequired: boolean;
   errorMsgRequired: string;
   errorMsgRating: string;
+  errorFields:any
 }
 
 class Create extends React.Component<CreateProps, CreateState> {
@@ -24,6 +25,7 @@ class Create extends React.Component<CreateProps, CreateState> {
     errorRequired: false,
     errorMsgRequired: "This is a required field",
     errorMsgRating: "Please enter a number between 0 and 10",
+    errorFields: [],
   };
   constructor(props: CreateProps) {
     super(props);
@@ -45,11 +47,13 @@ class Create extends React.Component<CreateProps, CreateState> {
       this.setState({
         errorRating: true,
       });
-    } else if (isEmpty(inputValue)) {
-      this.setState({
-        errorRequired: true,
-      });
-    } else {
+    } 
+    // else if (isEmpty(inputValue)) {
+    //   this.setState({
+    //     errorRequired: true,
+    //   });
+    // } 
+    else {
       this.setState({ errorRequired: false, errorRating: false });
       console.log("val");
       createdItem[inputName] = inputValue;
@@ -58,29 +62,47 @@ class Create extends React.Component<CreateProps, CreateState> {
 
   public handleSubmit = async () => {
     const { web } = this.props;
+    var errors=new Array();
     //Adding an item to the SP list
-    await web.lists
-      .getByTitle("Movies")
-      .items.add({
-        Title: this.newItemCreated["title"],
-        name: this.newItemCreated["name"],
-        Genre: this.newItemCreated["genre"],
-        Plot: this.newItemCreated["plot"],
-        ReleasedDate: this.newItemCreated["releasedDate"],
-        Ratings: this.newItemCreated["ratings"],
-      })
-      .then((result: any) => alert("insert successful "))
-      .catch((err) => console.log(err));
+    if (isEmpty(this.newItemCreated["name"])) {
+      errors.push("title");
+    } else if (isEmpty(this.newItemCreated["genre"])) {
+      errors.push("genre");
+    } else if (isEmpty(this.newItemCreated["plot"])) {
+      errors.push("plot");
+    } else if (isEmpty(this.newItemCreated["releasedDate"])) {
+      errors.push("releasedDate");
+    } else if (isEmpty(this.newItemCreated["ratings"])) {
+      errors.push("ratings");
+    }
+
+    if (errors.length > 0) {
+      this.setState({ errorRequired: true,errorFields:errors });
+    } else {
+      await web.lists
+        .getByTitle("Movies")
+        .items.add({
+          Title: this.newItemCreated["title"],
+          name: this.newItemCreated["name"],
+          Genre: this.newItemCreated["genre"],
+          Plot: this.newItemCreated["plot"],
+          ReleasedDate: this.newItemCreated["releasedDate"],
+          Ratings: this.newItemCreated["ratings"],
+        })
+        .then((result: any) => alert("insert successful "))
+        .catch((err) => console.log(err));
       //let history = useHistory();
       // history.goBack()
       //history.push('/')
       location.href =
-     "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+        "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+    }
   };
 
   render() {
+    const {errorFields}=this.state
     return (
-      <div className="card" style={{ padding: "10px" }}>
+      <div className="card bg-light" style={{ padding: "10px" }}>
         <form
           style={{ padding: "10px" }}
           name="createItemForm"
@@ -96,7 +118,7 @@ class Create extends React.Component<CreateProps, CreateState> {
               onChange={this.changeHandle}
               required={true}
             />
-            {this.state.errorRequired === true ? (
+            {errorFields.indexOf("title")>-1 ? (
               <small style={{ color: "red" }}>
                 {this.state.errorMsgRequired}
               </small>
@@ -114,7 +136,7 @@ class Create extends React.Component<CreateProps, CreateState> {
               <option value="Comedy">Comedy</option>
               <option value="Sci-fi">Sci-fi</option>
             </select>
-            {this.state.errorRequired === true ? (
+            {errorFields.indexOf("genre")>-1 ? (
               <small style={{ color: "red" }}>
                 {this.state.errorMsgRequired}
               </small>
@@ -128,7 +150,7 @@ class Create extends React.Component<CreateProps, CreateState> {
               onChange={this.changeHandle}
               required={true}
             ></textarea>
-            {this.state.errorRequired === true ? (
+            {errorFields.indexOf("plot")>-1 ? (
               <small style={{ color: "red" }}>
                 {this.state.errorMsgRequired}
               </small>
@@ -149,6 +171,10 @@ class Create extends React.Component<CreateProps, CreateState> {
               <small style={{ color: "red" }}>
                 {this.state.errorMsgRating}
               </small>
+            ) : null || errorFields.indexOf("ratings")>-1? (
+              <small style={{ color: "red" }}>
+                {this.state.errorMsgRequired}
+              </small>
             ) : null}
           </div>
           <div className="form-group">
@@ -160,7 +186,7 @@ class Create extends React.Component<CreateProps, CreateState> {
               onChange={this.changeHandle}
               required={true}
             />
-            {this.state.errorRequired === true ? (
+            {errorFields.indexOf("releasedDate")>-1 ? (
               <small style={{ color: "red" }}>
                 {this.state.errorMsgRequired}
               </small>

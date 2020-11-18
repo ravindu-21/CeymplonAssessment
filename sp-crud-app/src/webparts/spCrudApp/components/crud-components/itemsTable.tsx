@@ -6,8 +6,9 @@ import {
   Route,
   Link,
   match,
-  useHistory,Redirect,
-  HashRouter
+  useHistory,
+  Redirect,
+  HashRouter,
 } from "react-router-dom";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import ItemDetails from "./details";
@@ -27,7 +28,7 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
   }
 
   public handleDelete = (movie: any) => {
-    const { web} = this.props;
+    const { web } = this.props;
     //Deleting an item from SP list
     web.lists
       .getByTitle("Movies")
@@ -36,7 +37,8 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
       .then(() => console.log("delete successful"))
       .catch((err) => console.log(err));
 
-      location.href = "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+    location.href =
+      "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
   };
 
   render() {
@@ -45,56 +47,87 @@ class ItemsTable extends React.Component<ItemsTableProps, ItemsTableState> {
         <table className="table">
           <thead>
             <th>Title</th>
+            <th>Genre</th>
+            <th>Ratings</th>
+            <th></th>
+            <th></th>
+            <th></th>
           </thead>
-          <tbody id="table-content">
-            <div>
-              {this.props.items.map((item) => (
-                <tr>
-                  <td style={{ padding: "20px" }}>{item.name}</td>
-                  <td>
-                    <button className="btn btn-secondary" title="View">
-                      <Link to={`/details/${item.ID}`} style={{color:"white"}}><Icon iconName="View" /></Link>
-                    </button>
-                  </td>
-                  <td>
-                    <button className="btn btn-warning" title="Edit">
-                      <Link to={`/edit/${item.ID}`} style={{color:"white"}}>
-                        <Icon iconName="EditSolid12" />
-                      </Link>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => this.handleDelete(item.ID)}
-                      title="Delete"
-                    >
-                      <Icon iconName="Delete" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </div>
-            {/* Details / Edit form is displaying here */}
-            <section id="ViewAndEdit">
-              {/* <Route
-                path="/details/:itemId"
-                render={(props) => (
-                  <ItemDetails {...props} items={this.props.items} />
-                )}
-              />
-              <Route
-                path="/edit/:itemId"
-                render={(props) => (
-                  <Edit
-                    {...props}
-                    web={this.props.web}
-                    items={this.props.items}
-                  />
-                )}
-              /> */}
-            </section>
-            
+          <tbody>
+            {/* <div> */}
+            {this.props.items.map((item) => (
+              <tr>
+                <td style={{ padding: "20px" }}>{item.name}</td>
+                <td style={{ padding: "20px" }}>{item.Genre}</td>
+                <td style={{ padding: "20px" }}>
+                  <span style={{ color: "Blue", letterSpacing: "2px" }}>
+                    {item.Ratings}
+                    <Icon
+                      iconName="FavoriteStarFill"
+                      style={{ paddingTop: "2px" }}
+                    />
+                  </span>
+                </td>
+                <td>
+                  <button className="btn btn-secondary" title="View">
+                    <Link to={`/details/${item.ID}`} style={{ color: "white" }}>
+                      <Icon iconName="View" />
+                    </Link>
+                  </button>
+                </td>
+                <td>
+                  <button className="btn btn-warning" title="Edit">
+                    <Link to={`/edit/${item.ID}`} style={{ color: "white" }}>
+                      <Icon iconName="EditSolid12" />
+                    </Link>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => this.handleDelete(item.ID)}
+                    // data-toggle="modal"
+                    // data-target="#deleteConfirmation"
+                    title="Delete"
+                  >
+                    <Icon iconName="Delete" />
+                  </button>
+                </td>
+
+                {/* <div
+                  className="modal fade"
+                  id="deleteConfirmation"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-body">
+                        <Icon iconName="FeedbackRequestSolid" />
+                        <span style={{paddingLeft:"3px",fontSize:"18px"}}>Are you sure you want to delete this item?</span>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={() => this.handleDelete(item.ID)}
+                        >
+                          Yes, Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div> */}
+              </tr>
+            ))}
           </tbody>
         </table>
       </HashRouter>

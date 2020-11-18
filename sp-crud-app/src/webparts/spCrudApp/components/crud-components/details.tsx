@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Component } from "react";
-import { RouteComponentProps, match } from "react-router";
+import { RouteComponentProps, match, Link } from "react-router";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 
 interface RouteData {
@@ -20,6 +20,11 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
   constructor(props: ItemDetailsProps) {
     super(props);
   }
+
+  goBack = () => {
+    location.href =
+      "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
+  };
   render() {
     const { itemId } = this.props.match.params;
     //filtering the item that is chosen to view form all items
@@ -39,28 +44,36 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
         {itemToBeView.map((item) => (
           <div>
             <div className="card" style={{ padding: "15px" }}>
-              <h2 className="card-title">
-                <Icon iconName="MyMoviesTv" />
-                {item.name}
-                <span
-                  className="badge badge-primary"
-                  style={{ fontSize: "10px" }}
-                >
+              <div className="card-title" id="details-card-title">
+                <h1 style={{ textShadow: "0.5px 0.5px 1px #000000" }}>
+                  <Icon iconName="MyMoviesTv" style={{ padding: "15px" }} />
+                  {item.name}
+                </h1>
+
+                <span id="ratings-badge">
                   <Icon iconName="FavoriteStarFill" />
-                  {item.Ratings}/10
+                  {item.Ratings}
                 </span>
-              </h2>
+              </div>
               <p>
-                <b>{item.Genre}</b> /<b>Released on: {item.ReleasedDate}</b>
+                Genre:<b>{item.Genre}</b>
               </p>
-              {/* <p>
-                {new Intl.DateTimeFormat("en-GB", {
-                  year: "numeric",
-                  month: "long",
-                  day: "2-digit",
-                }).format(item.ReleasedDate)}
-              </p> */}
+
+              <p>
+                Released Date:
+                <b>
+                  {new Intl.DateTimeFormat("en-GB", {
+                    year: "numeric",
+                    month: "long",
+                    day: "2-digit",
+                  }).format(new Date(item.ReleasedDate))}
+                </b>
+              </p>
               <p>{item.Plot}</p>
+              <button className="btn btn-primary" style={{ marginLeft: "80%" }} onClick={this.goBack}>
+                <Icon iconName="ChromeBack" style={{ padding: "5px" }}/>
+                Go Back
+              </button>
             </div>
           </div>
         ))}

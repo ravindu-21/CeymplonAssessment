@@ -13,4 +13,18 @@
   display: grid;
   grid-template-columns: 52% 48%;
 }
-
+#details-card-title{
+  display: grid;
+  grid-template-columns: 80% 20%;
+  border-bottom: 1px solid rgb(134, 189, 252);
+}
+#ratings-badge{
+  
+  border-radius: 100px;
+  font-size: large;
+  background-color: #fad55af6;
+  padding: 4%;
+  margin: 20px;
+  text-align: center;
+  font-weight: bolder;
+}

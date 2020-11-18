@@ -18,6 +18,8 @@ export interface EditState {
   plot: any;
   releasedDate: any;
   ratings: number;
+  errorRating: boolean;
+  errorMsgRating: string;
 }
 
 class Edit extends React.Component<EditProps, EditState> {
@@ -29,12 +31,26 @@ class Edit extends React.Component<EditProps, EditState> {
       plot: "",
       releasedDate: "",
       ratings: undefined,
+      errorMsgRating: "",
+      errorRating:false
     };
   }
 
   public changeHandle = (e: any) => {
     const itemsCopy = { ...this.state };
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
     itemsCopy[e.target.name] = e.target.value;
+    if (
+      inputName === "ratings" &&
+      (parseInt(inputValue) < 0 || parseInt(inputValue) > 10)
+    ) {
+      // console.log("no val");
+      // alert("Please enter a number between 0 and 10");
+      this.setState({
+        errorRating: true,
+      });
+    } 
     this.setState({
       name: itemsCopy["name"],
       genre: itemsCopy["genre"],
@@ -151,6 +167,11 @@ class Edit extends React.Component<EditProps, EditState> {
                 min={0}
                 max={10}
               />
+              {this.state.errorRating === true ? (
+              <small style={{ color: "red" }}>
+                {this.state.errorMsgRating}
+              </small>
+            ) : null}
             </div>
             <div className="form-group">
               <label htmlFor="">ReleasedDate</label>
