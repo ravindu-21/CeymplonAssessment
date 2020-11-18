@@ -3,13 +3,13 @@ import { Component } from "react";
 import { RouteComponentProps, match } from "react-router";
 
 interface RouteData {
-  itemId: any;
+  itemId: any; //id of the item passed through routing
 }
 
 export interface EditProps {
   match?: match<RouteData>;
-  items?: any;
-  web?: any;
+  items?: any;//all items
+  web?: any;//SP url
 }
 
 export interface EditState {
@@ -45,8 +45,6 @@ class Edit extends React.Component<EditProps, EditState> {
       inputName === "ratings" &&
       (parseInt(inputValue) < 0 || parseInt(inputValue) > 10)
     ) {
-      // console.log("no val");
-      // alert("Please enter a number between 0 and 10");
       this.setState({
         errorRating: true,
       });
@@ -79,7 +77,6 @@ class Edit extends React.Component<EditProps, EditState> {
 
      location.href =
      "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
-    //this.reload();
   };
   
 

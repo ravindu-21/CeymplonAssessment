@@ -19,7 +19,6 @@
   border-bottom: 1px solid rgb(134, 189, 252);
 }
 #ratings-badge{
-  
   border-radius: 100px;
   font-size: large;
   background-color: #fad55af6;
@@ -28,3 +27,5 @@
   text-align: center;
   font-weight: bolder;
 }
+
+

@@ -1,16 +1,15 @@
 import * as React from "react";
-import { Component } from "react";
-import { RouteComponentProps, match, Link } from "react-router";
+import { RouteComponentProps, match } from "react-router";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 
 interface RouteData {
-  itemId: any;
+  itemId: any; //id of the item passed through routing
 }
 
 export interface ItemDetailsProps {
   match?: match<RouteData>;
-  items: any;
-  itemID: any;
+  items: any;//all items
+  //itemID: any;
 }
 
 export interface ItemDetailsState {}
@@ -32,13 +31,6 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
       (i) => i.ID === parseInt(itemId)
     );
 
-    //const { itemID } = this.props;
-    //filtering the item that is chosen to view form all items
-    // const itemToBeView = this.props.items.filter(
-    //   (i) => i.ID === parseInt(itemID)
-    // );
-    //   console.log("view",parseInt(itemID));
-    //   console.log("itbv",itemToBeView)
     return (
       <div style={{ padding: "15px" }}>
         {itemToBeView.map((item) => (
@@ -49,7 +41,6 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
                   <Icon iconName="MyMoviesTv" style={{ padding: "15px" }} />
                   {item.name}
                 </h1>
-
                 <span id="ratings-badge">
                   <Icon iconName="FavoriteStarFill" />
                   {item.Ratings}
@@ -58,7 +49,6 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
               <p>
                 Genre:<b>{item.Genre}</b>
               </p>
-
               <p>
                 Released Date:
                 <b>
@@ -70,8 +60,12 @@ class ItemDetails extends React.Component<ItemDetailsProps, ItemDetailsState> {
                 </b>
               </p>
               <p>{item.Plot}</p>
-              <button className="btn btn-primary" style={{ marginLeft: "80%" }} onClick={this.goBack}>
-                <Icon iconName="ChromeBack" style={{ padding: "5px" }}/>
+              <button
+                className="btn btn-primary"
+                style={{ marginLeft: "80%" }}
+                onClick={this.goBack}
+              >
+                <Icon iconName="ChromeBack" style={{ padding: "5px" }} />
                 Go Back
               </button>
             </div>

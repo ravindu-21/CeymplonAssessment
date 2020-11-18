@@ -22,13 +22,6 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { Web } from "@pnp/sp/webs";
 
-// import { Button } from "office-ui-fabric-react/lib/Button";
-//import { Button } from 'react-bootstrap'
-// import "font-awesome/css/font-awesome.css"
-// import "font-awesome/css/font-awesome.min.css"
-//import { SPOperations } from "../services/SPServices";
-//import styles from "./SpCrudApp.module.scss";
-
 export default class SpCrudApp extends React.Component<
   ISpCrudAppProps,
   ISpCrudAppState,
@@ -59,13 +52,8 @@ export default class SpCrudApp extends React.Component<
       });
   };
 
-  public reload = () => {
-    //window.location.reload();
-    location.href =
-      "https://ravinduceymplon.sharepoint.com/sites/CeymplonDemo/_layouts/15/workbench.aspx";
-  };
-
   public render(): React.ReactElement<ISpCrudAppProps> {
+    const {listItems}=this.state
     return (
       <HashRouter>
         <div>
@@ -86,7 +74,7 @@ export default class SpCrudApp extends React.Component<
             render={(props) => (
               <ItemsTable
                 {...props}
-                items={this.state.listItems}
+                items={listItems}
                 web={this.web}
               />
             )}
@@ -98,7 +86,7 @@ export default class SpCrudApp extends React.Component<
             <Route
                 path="/details/:itemId"
                 render={(props) => (
-                  <ItemDetails {...props} items={this.state.listItems} />
+                  <ItemDetails {...props} items={listItems} />
                 )}
               />
               <Route
@@ -107,7 +95,7 @@ export default class SpCrudApp extends React.Component<
                   <Edit
                     {...props}
                     web={this.web}
-                    items={this.state.listItems}
+                    items={listItems}
                   />
                 )}
               />
